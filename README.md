@@ -15,7 +15,7 @@ Your intelligent shopping companion that searches across multiple e-commerce pla
 
 ## 🚀 Live Demo
 
-Check out the live demo: [AI Shopping Agent](https://nahid305-ai-shopping-agent-streamlit-app.streamlit.app)
+Check out the live demo: [AI Shopping Agent](https://ai-shopping-agent.streamlit.app)
 
 ## 🛠️ Installation
 

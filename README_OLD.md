@@ -9,19 +9,30 @@ Your intelligent shopping companion that searches across multiple e-commerce pla
 - 💰 **Price Comparison**: Find the best deals across different sites
 - 🎙️ **Voice Search**: Search using voice commands
 - 📱 **Responsive Design**: Works perfectly on desktop and mobile
-- 🎨 **Modern UI**: Beautiful, engaging interface similar to real shopping sites
+- 🎨 **Modern UI**: Beautiful, engaging interface similar to real shopping sites 🎨 **Modern UI**: Beautiful, engaging interface similar to real shopping sitesping Agent
+
+Your intelligent shopping companion that searches across multiple e-commerce platforms to find the best deals!
+
+## ✨ Features
+
+- 🔍 **Smart Search**: Intelligent product search across multiple platforms
+- 🛒 **Multi-Platform Support**: Search Flipkart, Amazon, and AJIO simultaneously
+- 💰 **Price Comparison**: Find the best deals across different sites
+- 🎙️ **Voice Search**: Search using voice commands
+- 📱 **Responsive Design**: Works perfectly on desktop and mobile
+- � **Modern UI**: Beautiful, engaging interface similar to real shopping sites
 - ⚡ **Fast Performance**: Parallel scraping for quick results
 - 🔧 **Advanced Filters**: Filter by price, source, and sort options
 
 ## 🚀 Live Demo
 
-Check out the live demo: [AI Shopping Agent](https://nahid305-ai-shopping-agent-streamlit-app.streamlit.app)
+Check out the live demo: [AI Shopping Agent](https://your-streamlit-app-url.streamlit.app)
 
 ## 🛠️ Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Nahid305/ai-shopping-agent.git
+git clone https://github.com/yourusername/ai-shopping-agent.git
 cd ai-shopping-agent
 ```
 
@@ -149,9 +160,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-Nahid305 - [GitHub Profile](https://github.com/Nahid305)
+Your Name - your.email@example.com
 
-Project Link: [https://github.com/Nahid305/ai-shopping-agent](https://github.com/Nahid305/ai-shopping-agent)
+Project Link: [https://github.com/yourusername/ai-shopping-agent](https://github.com/yourusername/ai-shopping-agent)
 
 ---
 

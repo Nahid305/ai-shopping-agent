@@ -121,7 +121,7 @@ def main():
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            search_query = create_search_section()
+            search_query, search_button_clicked = create_search_section()
             if search_query != st.session_state.query:
                 st.session_state.query = search_query
                 reset_search()
@@ -135,6 +135,27 @@ def main():
                         st.session_state.query = voice_text
                         reset_search()
                         st.rerun()
+    
+    # Handle main search button click
+    if search_button_clicked:
+        # Get current filter values from sidebar
+        sources = st.session_state.selected_sources
+        price_range = st.session_state.price_range
+        
+        if not st.session_state.query.strip():
+            st.warning("⚠️ Please enter a search query")
+        elif not sources:
+            st.warning("⚠️ Please select at least one shopping site in the sidebar")
+        else:
+            st.session_state.search_executed = True
+            with st.spinner("🔍 Searching across platforms..."):
+                results = perform_search(
+                    st.session_state.query,
+                    sources,
+                    price_range[1]
+                )
+                st.session_state.search_results = results
+                st.rerun()
     
     # Filters Section
     with st.sidebar:
@@ -174,7 +195,7 @@ def main():
         if st.button(
             "🔍 Search Products", 
             disabled=search_disabled,
-            key="main_search",
+            key="sidebar_search",
             help="Start searching across selected platforms"
         ):
             if not st.session_state.query.strip():
@@ -195,6 +216,9 @@ def main():
     # Results Section
     if st.session_state.search_executed:
         st.markdown("---")
+        
+        # Debug information
+        st.info(f"🔍 Search executed for: '{st.session_state.query}' | Found: {len(st.session_state.search_results)} products")
         
         # Results Header
         col1, col2, col3 = st.columns([2, 1, 1])
@@ -222,6 +246,10 @@ def main():
                 if price_range[0] <= item.get('price', 0) <= price_range[1]
             ]
             
+            # Debug: Show filtering details
+            st.write(f"📊 Total results: {len(st.session_state.search_results)} | After sorting: {len(sorted_results)} | After price filter: {len(filtered_results)}")
+            st.write(f"💰 Price range filter: ₹{price_range[0]:,} - ₹{price_range[1]:,}")
+            
             if filtered_results:
                 st.success(f"✅ Found {len(filtered_results)} products matching your criteria")
                 
@@ -234,7 +262,11 @@ def main():
                             with cols[j]:
                                 create_product_card(filtered_results[i + j])
             else:
-                st.info("🔍 No products found in your price range. Try adjusting the filters.")
+                st.warning("🔍 No products found in your price range. Try adjusting the filters.")
+                # Show some sample prices to help debug
+                if sorted_results:
+                    sample_prices = [item.get('price', 0) for item in sorted_results[:5]]
+                    st.write(f"Sample product prices: {sample_prices}")
         else:
             st.info("🔍 No products found. Try different search terms or check if the sites are accessible.")
     

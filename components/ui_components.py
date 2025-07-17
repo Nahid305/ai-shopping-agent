@@ -67,6 +67,22 @@ def apply_custom_css():
         margin-bottom: 2rem;
     }
     
+    /* Search Button Styling */
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        height: 3rem;
+    }
+    
+    .stButton > button[kind="primary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
     /* Product Cards */
     .product-card {
         background: white;
@@ -277,18 +293,24 @@ def create_hero_section():
     """, unsafe_allow_html=True)
 
 def create_search_section():
-    """Create the main search input section"""
+    """Create the main search input section with search button"""
     st.markdown('<div class="search-container">', unsafe_allow_html=True)
     
-    # Search input with enhanced styling
-    query = st.text_input(
-        "Search Products",
-        placeholder="🔍 Search for products... (e.g., 'black headphones under 5000')",
-        value=st.session_state.get('query', ''),
-        key="search_input",
-        help="Enter product name, color, brand, or any specific requirements",
-        label_visibility="hidden"
-    )
+    # Search input with button in the same row
+    col1, col2 = st.columns([4, 1])
+    
+    with col1:
+        query = st.text_input(
+            "Search Products",
+            placeholder="🔍 Search for products... (e.g., 'black headphones under 5000')",
+            value=st.session_state.get('query', ''),
+            key="search_input",
+            help="Enter product name, color, brand, or any specific requirements",
+            label_visibility="hidden"
+        )
+    
+    with col2:
+        search_clicked = st.button("🔍 Search", key="main_search_button", type="primary", use_container_width=True)
     
     # Quick search suggestions
     st.markdown("**💡 Quick Suggestions:**")
@@ -305,7 +327,7 @@ def create_search_section():
                 st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
-    return query
+    return query, search_clicked
 
 def create_filters_section():
     """Create the filters section in sidebar"""

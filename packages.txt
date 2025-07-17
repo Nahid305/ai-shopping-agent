@@ -1,6 +1,4 @@
 chromium
 chromium-driver
-chromium-browser
-google-chrome-stable
 portaudio19-dev
 libasound2-dev

@@ -67,20 +67,24 @@ def apply_custom_css():
         margin-bottom: 2rem;
     }
     
-    /* Search Button Styling */
-    .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        height: 3rem;
+    /* Search Button Styling - Simplified for better compatibility */
+    .stButton > button[type="submit"],
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: 2px solid #667eea !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        padding: 0.5rem 1rem !important;
+        min-height: 2.5rem !important;
+        transition: all 0.3s ease !important;
     }
     
-    .stButton > button[kind="primary"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
     }
     
     /* Product Cards */
@@ -173,21 +177,21 @@ def apply_custom_css():
         padding: 1rem;
     }
     
-    /* Button Styles */
+    /* General Button Styles */
     .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 0.8rem 2rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: 1px solid #667eea !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        min-height: 2.5rem !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transform: translateY(-1px) !important;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
     }
     
     /* Footer */
@@ -296,21 +300,54 @@ def create_search_section():
     """Create the main search input section with search button"""
     st.markdown('<div class="search-container">', unsafe_allow_html=True)
     
-    # Search input with button in the same row
-    col1, col2 = st.columns([4, 1])
+    # Search input
+    query = st.text_input(
+        "Search Products",
+        placeholder="🔍 Search for products... (e.g., 'black headphones under 5000')",
+        value=st.session_state.get('query', ''),
+        key="search_input",
+        help="Enter product name, color, brand, or any specific requirements",
+        label_visibility="hidden"
+    )
     
-    with col1:
-        query = st.text_input(
-            "Search Products",
-            placeholder="🔍 Search for products... (e.g., 'black headphones under 5000')",
-            value=st.session_state.get('query', ''),
-            key="search_input",
-            help="Enter product name, color, brand, or any specific requirements",
-            label_visibility="hidden"
-        )
+    # Search button with guaranteed visibility
+    st.markdown("""
+    <style>
+    .search-button-container {
+        margin: 1rem 0;
+        text-align: center;
+    }
+    .search-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 150px;
+        display: inline-block;
+        text-decoration: none;
+    }
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
-    with col2:
-        search_clicked = st.button("🔍 Search", key="main_search_button", type="primary", use_container_width=True)
+    # Primary search button
+    search_clicked = st.button("🔍 Search Products", key="main_search_button", type="primary", use_container_width=True)
+    
+    # Fallback: Add a visible HTML button as backup
+    st.markdown("""
+    <div class="search-button-container">
+        <p><strong>Alternative:</strong> If the button above doesn't work, use the search button in the sidebar →</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Quick search suggestions
     st.markdown("**💡 Quick Suggestions:**")

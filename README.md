@@ -100,14 +100,21 @@ The scrapers use headless Chrome optimized for cloud deployment:
 1. **Chrome Driver Issues**:
    - Chrome browser is automatically managed via webdriver-manager
    - Cloud deployment uses Chromium from packages.txt
+   - Fallback scrapers use requests+BeautifulSoup when Selenium fails
 
 2. **Scraping Issues**:
    - Scrapers include multiple fallback selectors for robustness
    - Anti-bot measures help prevent blocking
+   - If live scraping fails, sample products are shown for demonstration
 
 3. **Voice Recognition**:
    - Ensure microphone permissions are granted
    - Check internet connection for speech recognition
+
+4. **No Results Found**:
+   - This may happen on cloud deployments due to scraping limitations
+   - Sample products will be generated for demonstration purposes
+   - Try running locally for full scraping functionality
 
 ### Performance Tips
 - Use specific search terms for better results

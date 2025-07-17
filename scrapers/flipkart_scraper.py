@@ -23,15 +23,28 @@ def scrape_flipkart(search_query, budget=None):
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--log-level=3")
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--disable-web-security")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-plugins")
+    options.add_argument("--disable-images")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
-    options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    options.add_argument("--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    
     try:
+        # Try to use system Chrome first for cloud deployment
+        try:
+            driver = webdriver.Chrome(options=options)
+            print("✅ Using system Chrome driver")
+        except Exception as e:
+            print(f"⚠️ System Chrome failed: {e}")
+            # Fallback to ChromeDriverManager
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+            print("✅ Using ChromeDriverManager")
+        
         # Go directly to search results page
         search_url = f"https://www.flipkart.com/search?q={search_query.replace(' ', '%20')}"
+        print(f"🔍 Accessing: {search_url}")
         driver.get(search_url)
         time.sleep(2)  # Reduced from 5 to 2 seconds
 

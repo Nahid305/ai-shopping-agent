@@ -275,6 +275,12 @@ def create_hero_section():
     <div class="hero-container">
         <h1 class="hero-title">🤖 AI Shopping Agent</h1>
         <p class="hero-subtitle">Your Intelligent Shopping Companion - Search Across Multiple Platforms Instantly</p>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+            <p style="color: #f8f9fa; margin: 0; font-size: 0.9rem;">
+                ℹ️ <strong>Demo Mode:</strong> If live scraping fails due to cloud limitations, 
+                sample products will be shown for demonstration purposes.
+            </p>
+        </div>
         <div class="hero-features">
             <div class="feature-item">
                 <h3>🔍</h3>

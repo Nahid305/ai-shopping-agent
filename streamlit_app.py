@@ -10,6 +10,7 @@ from components.ui_components import (
 from scrapers.flipkart_scraper import scrape_flipkart
 from scrapers.amazon_scraper import scrape_amazon
 from scrapers.ajio_scraper import scrape_ajio
+from scrapers.fallback_scrapers import scrape_flipkart_fallback, scrape_amazon_fallback, generate_sample_products
 from parser import parse_query
 from utils import filter_by_budget, shorten_title, listen
 import time
@@ -52,7 +53,7 @@ def reset_search():
     st.session_state.search_executed = False
 
 def perform_search(query, sources, budget):
-    """Perform search across selected sources"""
+    """Perform search across selected sources with fallback options"""
     parsed = parse_query(query)
     all_results = []
     search_text = f"{parsed.get('color', '')} {parsed['product']}".strip()
@@ -61,32 +62,70 @@ def perform_search(query, sources, budget):
     status_text = st.empty()
     
     total_sources = len(sources)
-    progress_step = 1.0 / total_sources
+    progress_step = 1.0 / total_sources if total_sources > 0 else 1.0
     
     try:
         if 'Flipkart' in sources:
             status_text.text("🔍 Searching Flipkart...")
             progress_bar.progress(0.1)
-            flipkart_results = scrape_flipkart(search_text, budget)
-            all_results.extend(flipkart_results)
+            try:
+                flipkart_results = scrape_flipkart(search_text, budget)
+                if not flipkart_results:  # If no results, try fallback
+                    status_text.text("🔄 Trying Flipkart fallback method...")
+                    flipkart_results = scrape_flipkart_fallback(search_text, budget)
+                all_results.extend(flipkart_results)
+                print(f"Flipkart results: {len(flipkart_results)}")
+            except Exception as e:
+                print(f"Flipkart error: {e}")
+                status_text.text("🔄 Using Flipkart fallback...")
+                try:
+                    flipkart_results = scrape_flipkart_fallback(search_text, budget)
+                    all_results.extend(flipkart_results)
+                except Exception as e2:
+                    print(f"Flipkart fallback error: {e2}")
             progress_bar.progress(progress_step)
             time.sleep(0.5)
         
         if 'Amazon' in sources:
             status_text.text("🔍 Searching Amazon...")
             progress_bar.progress(0.1 + progress_step)
-            amazon_results = scrape_amazon(search_text, budget)
-            all_results.extend(amazon_results)
+            try:
+                amazon_results = scrape_amazon(search_text, budget)
+                if not amazon_results:  # If no results, try fallback
+                    status_text.text("🔄 Trying Amazon fallback method...")
+                    amazon_results = scrape_amazon_fallback(search_text, budget)
+                all_results.extend(amazon_results)
+                print(f"Amazon results: {len(amazon_results)}")
+            except Exception as e:
+                print(f"Amazon error: {e}")
+                status_text.text("🔄 Using Amazon fallback...")
+                try:
+                    amazon_results = scrape_amazon_fallback(search_text, budget)
+                    all_results.extend(amazon_results)
+                except Exception as e2:
+                    print(f"Amazon fallback error: {e2}")
             progress_bar.progress(2 * progress_step)
             time.sleep(0.5)
         
         if 'AJIO' in sources:
             status_text.text("🔍 Searching AJIO...")
             progress_bar.progress(0.1 + 2 * progress_step)
-            ajio_results = scrape_ajio(search_text, budget)
-            all_results.extend(ajio_results)
+            try:
+                ajio_results = scrape_ajio(search_text, budget)
+                all_results.extend(ajio_results)
+                print(f"AJIO results: {len(ajio_results)}")
+            except Exception as e:
+                print(f"AJIO error: {e}")
             progress_bar.progress(1.0)
             time.sleep(0.5)
+        
+        # If no results from any scraper, generate sample products for demo
+        if not all_results:
+            status_text.text("🎭 Generating sample results for demonstration...")
+            sample_results = generate_sample_products(search_text, budget)
+            all_results.extend(sample_results)
+            progress_bar.progress(1.0)
+            time.sleep(1)
         
         status_text.text("✅ Search completed!")
         time.sleep(1)

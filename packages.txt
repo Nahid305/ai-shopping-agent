@@ -1,0 +1,4 @@
+chromium
+chromium-driver
+portaudio19-dev
+libasound2-dev
